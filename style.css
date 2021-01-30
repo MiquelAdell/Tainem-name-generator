@@ -1,0 +1,25 @@
+html {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 2em;
+}
+body {
+  border: 1px solid gray;
+  border-radius: 50px;
+  width: 200px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px;
+  display: flex;
+}
+
+#text {
+  margin-bottom: 1em;
+  line-height: 1.5em;
+}
+
+#button {
+
+}

@@ -1,0 +1,167 @@
+<html lang="ca_ES">
+  <head>
+    <meta charset="utf-8">
+    <title>Generador de noms del dragonat</title>
+    <style>
+    html {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin: 2em;
+    }
+    body {
+      border: 1px solid gray;
+      border-radius: 50px;
+      height: 200px;
+      width: 200px;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 50px;
+    }
+
+    #text {
+      align-self: flex-start;
+    }
+
+    #button {
+      align-self: flex-end;
+    }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+    <script>
+    var vowels = [
+      "a", "e", "i", "o", "u"
+    ]
+    var consonants = [
+      "t","h","b","p","f","m","n"
+    ];
+
+    var interVowels = [
+      "dn", "bd", "pt", "v","r"
+    ];
+
+    var syllablesFrequency = [
+      1,1,1,
+      2,2,2,2,2,2,
+      3,3,3,3,3,3,3,3,3,3,3,
+      4,4,4,4,4,4,4,4,
+      5,5,5,5,
+      6,6,
+      7,
+    ];
+
+    function randomElement(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function getVowelConsonant() {
+      return randomElement(vowels)+randomElement(consonants);
+    }
+
+    function getConsonantVowel() {
+      return randomElement(consonants)+randomElement(vowels);
+    }
+
+    function getInterVowels() {
+      return randomElement(interVowels);
+    }
+
+    function getPreviousLetter(i, word) {
+      var lastSyllabe = word[i-1];
+      if (lastSyllabe) {
+        return lastSyllabe[lastSyllabe.length-1];
+      } else {
+        console.log(lastSyllabe, word);
+      }
+    }
+
+    function isPreviousLetterAVowel(i, word) {
+      return vowels.includes(getPreviousLetter(i, word));
+    }
+
+    function isPreviousLetterAConsonant(i, word) {
+      return consonants.includes(getPreviousLetter(i, word));
+    }
+
+    function isPreviousLetterAHypen(i, word) {
+      return getPreviousLetter(i, word) == "-";
+    }
+
+    function isPreviousLetterASpace(i, word) {
+      return getPreviousLetter(i, word) == " ";
+    }
+
+    function getSyllabe(i, word) {
+      if ( i == 0 ) {
+        if ( Math.random() <= 0.6 ) { //60% of words start with consonant+vowel
+          return getConsonantVowel();
+        } else {
+          return getVowelConsonant();
+        }
+      } else {
+        if ( (i+1) < word.length ) { //not the last syllabe
+          if ( Math.random() <= 0.1 ) { //10% of provability of a hypen
+             return "-";
+          }
+          if ( Math.random() <= 0.1 ) { //10% of provability of a space
+             return " ";
+          }
+        }
+
+        if ( isPreviousLetterAVowel(i, word) ) {
+          if ( Math.random() <= 0.4 ) { //40% of provability of a interVowels
+            return getInterVowels();
+          }
+        } else if ( isPreviousLetterAHypen(i, word) || isPreviousLetterASpace(i, word) ) {
+          if ( Math.random() <= 0.6 ) { //60% of words start with consonant+vowel
+            return getConsonantVowel();
+          } else {
+            return getVowelConsonant();
+          }
+        } else {
+          // we never have getVowelConsonant + vonsonantVowel so we get getVowelConsonant
+          return getVowelConsonant();
+        }
+      }
+    }
+
+    function word(){
+      var word = "";
+      var totalNumberOfSyllables = randomElement(syllablesFrequency);
+
+      var word = new Array(totalNumberOfSyllables);
+      for (var i = 0; i < word.length; i++){
+        word[i] = getSyllabe(i, word);
+      }
+      word = word.join("");
+      word = word.charAt(0).toUpperCase() + word.slice(1)
+      return word;
+    }
+
+    function generate() {
+      var text = "";
+      var paraulesAGenerar = 10;
+      for (var p = 0; p < paraulesAGenerar; p++) {
+        text = text+"<br>"+word();
+      }
+
+      $('#text').html(text);
+    }
+    $( document ).ready(function() {
+      generate();
+
+      $('#button').click(function(event){
+        event.preventDefault();
+        generate();
+      })
+    });
+    </script>
+  </head>
+  <body>
+    <div id="text"></div>
+    <input id="button"
+       type="button"
+       value="generar nous noms">
+  </body>
+</html>

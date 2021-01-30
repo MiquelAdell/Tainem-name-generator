@@ -1,6 +1,6 @@
-/****
- **** CONFIGURATION
- ****/
+/***********************
+ **** CONFIGURATION ****
+ ***********************/
 
 /*
  * CHARACTER SETS
@@ -39,6 +39,10 @@ const VOWEL_BREAK = 0.5;
 const CONSONANT_BREAK = 0.5;
 const SPACE = 0.05;
 const HYPEN = 0.05;
+
+/***********************
+ ******** CODE *********
+ ***********************/
 
 var lastSyllabe = null;
 var lastLetter = null;

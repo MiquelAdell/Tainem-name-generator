@@ -12,20 +12,21 @@
     body {
       border: 1px solid gray;
       border-radius: 50px;
-      height: 200px;
       width: 200px;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      padding: 50px;
+      padding: 15px;
+      display: flex;
     }
 
     #text {
-      align-self: flex-start;
+      margin-bottom: 1em;
+      line-height: 1.5em;
     }
 
     #button {
-      align-self: flex-end;
+
     }
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
@@ -33,63 +34,65 @@
     var vowels = [
       "a", "e", "i", "o", "u"
     ]
-    var consonants = [
-      "t","h","b","p","f","m","n"
+
+    var consonantsBeforeVowel = [
+      "c","t","h","b","p","f","m","n","r",
     ];
 
-    var interVowels = [
+    var consonantsAfterVowel = [
+      "t","p","f","m","n"
+    ];
+
+    var consonantsBetweenVowels = [
       "dn", "bd", "pt", "v","r"
     ];
 
-    var syllablesFrequency = [
-      1,1,1,
-      2,2,2,2,2,2,
-      3,3,3,3,3,3,3,3,3,3,3,
-      4,4,4,4,4,4,4,4,
-      5,5,5,5,
-      6,6,
-      7,
+    var distributionOfnumberOfSyllables = [
+      1,
+      2,2,2,2,
+      3,3,3,3,3,3,3,3,
+      4,4,4,4,4,
+      5,5,
+      6,
     ];
+
+    var lastSyllabe = null;
+    var lastLetter = null;
 
     function randomElement(array) {
       return array[Math.floor(Math.random() * array.length)];
     }
 
     function getVowelConsonant() {
-      return randomElement(vowels)+randomElement(consonants);
+      return randomElement(vowels)+randomElement(consonantsAfterVowel);
     }
 
     function getConsonantVowel() {
-      return randomElement(consonants)+randomElement(vowels);
+      return randomElement(consonantsBeforeVowel)+randomElement(vowels);
     }
 
-    function getInterVowels() {
-      return randomElement(interVowels);
+    function getConsonantsBetweenVowels() {
+      return randomElement(consonantsBetweenVowels);
     }
 
-    function getPreviousLetter(i, word) {
-      var lastSyllabe = word[i-1];
-      if (lastSyllabe) {
-        return lastSyllabe[lastSyllabe.length-1];
-      } else {
-        console.log(lastSyllabe, word);
-      }
+    function getPreviousLetter( ) {
+      return lastLetter;
     }
 
     function isPreviousLetterAVowel(i, word) {
-      return vowels.includes(getPreviousLetter(i, word));
+      return vowels.includes(getPreviousLetter());
     }
 
     function isPreviousLetterAConsonant(i, word) {
-      return consonants.includes(getPreviousLetter(i, word));
+      return consonants.includes(getPreviousLetter());
     }
 
     function isPreviousLetterAHypen(i, word) {
-      return getPreviousLetter(i, word) == "-";
+      return getPreviousLetter() == "-";
     }
 
     function isPreviousLetterASpace(i, word) {
-      return getPreviousLetter(i, word) == " ";
+      return getPreviousLetter() == " ";
     }
 
     function getSyllabe(i, word) {
@@ -101,17 +104,17 @@
         }
       } else {
         if ( (i+1) < word.length ) { //not the last syllabe
-          if ( Math.random() <= 0.1 ) { //10% of provability of a hypen
+          if ( Math.random() <= 0.05 ) { //5% of provability of a hypen
              return "-";
           }
-          if ( Math.random() <= 0.1 ) { //10% of provability of a space
+          if ( Math.random() <= 0.05 ) { //5% of provability of a space
              return " ";
           }
         }
 
         if ( isPreviousLetterAVowel(i, word) ) {
           if ( Math.random() <= 0.4 ) { //40% of provability of a interVowels
-            return getInterVowels();
+            return getConsonantsBetweenVowels();
           }
         } else if ( isPreviousLetterAHypen(i, word) || isPreviousLetterASpace(i, word) ) {
           if ( Math.random() <= 0.6 ) { //60% of words start with consonant+vowel
@@ -119,20 +122,22 @@
           } else {
             return getVowelConsonant();
           }
-        } else {
-          // we never have getVowelConsonant + vonsonantVowel so we get getVowelConsonant
-          return getVowelConsonant();
         }
       }
+      //the default sylabe is vowelConsonant
+      return getVowelConsonant();
     }
 
     function word(){
       var word = "";
-      var totalNumberOfSyllables = randomElement(syllablesFrequency);
+      var totalNumberOfSyllables = randomElement(distributionOfnumberOfSyllables);
 
       var word = new Array(totalNumberOfSyllables);
       for (var i = 0; i < word.length; i++){
-        word[i] = getSyllabe(i, word);
+        var syllabe = getSyllabe(i, word);
+        lastSyllabe = syllabe;
+        lastLetter = syllabe.charAt(syllabe.length-1);
+        word[i] = syllabe;
       }
       word = word.join("");
       word = word.charAt(0).toUpperCase() + word.slice(1)

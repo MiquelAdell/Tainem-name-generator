@@ -6,7 +6,7 @@
  * CHARACTER SETS
  */
 const vowels = [
-  "a", "e", "i", "o", "u"
+  "a", "e", "i", "o", "u", "oe", "ao", "eo", "ai"
 ]
 
 const consonantsBeforeVowel = [
@@ -18,7 +18,7 @@ const consonantsAfterVowel = [
 ];
 
 const consonantsBetweenVowels = [
-  "b", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "v", "w", "x", "z",
+  "b", "d", "f", "g", "h", "j", "l", "m", "n", "p", "r", "s", "t", "v", "x", "z",
   "dn", "bd", "pt",
 ];
 
@@ -35,8 +35,8 @@ const distributionOfnumberOfSyllables = [
  * PROBABILITIES
  */
 const START_WITH_CONSONANT = 0.5;
-const VOWEL_BREAK = 0.5;
-const CONSONANT_BREAK = 0.5;
+const VOWEL_BREAK = 1;
+const CONSONANT_BREAK = 1;
 const SPACE = 0.05;
 const HYPEN = 0.05;
 

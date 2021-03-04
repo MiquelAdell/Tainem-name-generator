@@ -4,22 +4,40 @@ html {
   align-items: flex-start;
   margin: 2em;
 }
-body {
-  border: 1px solid gray;
-  border-radius: 50px;
-  width: 200px;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 15px;
-  display: flex;
+
+.card {
+    margin: 1rem;
+    width: 800px;
 }
 
-#text {
-  margin-bottom: 1em;
-  line-height: 1.5em;
+.character__name {
+    font-weight: bold;
+}
+
+.character .row {
+    display: flex;
+    flex-direction: row;
+    margin: 1rem 0;
+    align-items: center;
+}
+
+.character__word {
+    margin-right: 0.5em;
+    display: inline-block;
 }
 
 #button {
 
+}
+
+.skills__blocked {
+    background: #111;
+}
+
+.skills {
+    margin: 1rem 0;
+}
+
+.skills table {
+    width: 100%;
 }
